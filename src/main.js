@@ -9,14 +9,18 @@ function initController( $scope ) {
     let camera, scene, renderer;
 	// render DOM
     let container = document.getElementById( 'container' );
-	
+	// mouse event
 	let isMouseRightClick = false;
+	let mouseDownX, mouseDownY;
+	let mouseMoveX, mouseMoveY;
+	let cameraX   , cameraY;
 	
 	// add event listener
-	document.body.addEventListener('mousewheel', onMouseWheel);
 	document.body.addEventListener('keydown'   , onKeyDown   );
+	document.body.addEventListener('mousewheel', onMouseWheel);
 	document.body.addEventListener('mousedown' , onMouseDown );
-	document.body.addEventListener('mouseup'   , onMouseUp );
+	document.body.addEventListener('mouseup'   , onMouseUp   );
+	document.body.addEventListener('mousemove' , onMouseMove );
 
 	init();
 	openDialog();
@@ -31,7 +35,7 @@ function initController( $scope ) {
         renderer = new THREE.WebGLRenderer();
 
 		camera.position.z = 1000;
-
+		
 		// set renderer
         renderer.setPixelRatio( window.devicePixelRatio );
         container.appendChild( renderer.domElement );
@@ -65,15 +69,30 @@ function initController( $scope ) {
 	}
 	
 	function onMouseDown( event ) {
-		let x = event.clientX;
-		let y = event.clientY;
-		if ( event.button == 2 ) isMouseRightClick = true;
+		if ( event.button == 2 ) {
+			isMouseRightClick = true;
+			mouseDownX = event.clientX;
+			mouseDownY = event.clientY;
+			cameraX    = camera.position.x;
+			cameraY    = camera.position.y;
+		}
 		console.log( `mouse: ${isMouseRightClick}` );
 	}
 	
 	function onMouseUp( event ) {
 		if ( event.button == 2 ) isMouseRightClick = false;
 		console.log( `mouse: ${isMouseRightClick}` );
+	}
+	
+	function onMouseMove( event ) {
+		
+		if ( isMouseRightClick ) {
+			mouseMoveX = event.clientX;
+			mouseMoveY = event.clientY;
+			camera.position.x = cameraX -(mouseMoveX - mouseDownX);
+			camera.position.y = cameraY + mouseMoveY - mouseDownY;
+			camera.updateProjectionMatrix();
+		}
 	}
 	
 	function onDialogClose( filePaths ) {
