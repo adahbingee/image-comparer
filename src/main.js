@@ -51,9 +51,22 @@ function initController( $scope ) {
 	
 	function onMouseWheel( event ) {
 		let delta = event.deltaY;
-		if ( delta < 0) camera.zoom *= cfg.zoomStep;
-		if ( delta > 0) camera.zoom /= cfg.zoomStep;
-		camera.updateProjectionMatrix();
+		
+		//camera.updateProjectionMatrix();
+		
+		let zoom = camera.zoom;
+		if ( delta < 0) zoom *= cfg.zoomStep;
+		if ( delta > 0) zoom /= cfg.zoomStep;
+		
+		let tweenFrom = { zoom: camera.zoom };
+		let tweenTo   = { zoom: zoom        };
+		let tween     = new TWEEN.Tween( tweenFrom );
+		tween.to(tweenTo, 200);
+		tween.onUpdate(function () {
+			camera.zoom = tweenFrom.zoom;
+			camera.updateProjectionMatrix();
+		});
+		tween.start();
 	}
 	
 	function onKeyDown( event ) {
@@ -61,6 +74,11 @@ function initController( $scope ) {
 		switch ( key ) {
 			case 79:  // o
 				openDialog();
+				break;
+			case 27: // ESC
+				break;
+			case 82: // r
+				resetCamera();
 				break;
 			default:
 				console.log( key );
@@ -129,6 +147,13 @@ function initController( $scope ) {
 
 		renderer.setSize( window.innerWidth, window.innerHeight );
 	}
+	
+	function resetCamera() {
+		camera.position.x = 0;
+		camera.position.y = 0;
+		camera.zoom       = 1;
+		camera.updateProjectionMatrix();
+	}
 
 	function animate() {
         requestAnimationFrame( animate );
@@ -136,6 +161,7 @@ function initController( $scope ) {
     }
 
 	function render() {
+		TWEEN.update();
 		renderer.render( scene, camera );
 	}
 }
