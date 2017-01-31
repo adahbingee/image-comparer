@@ -9,11 +9,15 @@ function initController( $scope ) {
     let camera, scene, renderer;
 	// render DOM
     let container = document.getElementById( 'container' );
+	// control DOM
+	let control   = document.getElementById( 'control' );
 	// mouse event
 	let isMouseRightClick = false;
 	let mouseDownX, mouseDownY;
 	let mouseMoveX, mouseMoveY;
 	let cameraX   , cameraY;
+	// control
+	let isControlShow = true;
 	
 	// add event listener
 	document.body.addEventListener('keydown'   , onKeyDown   );
@@ -21,10 +25,40 @@ function initController( $scope ) {
 	document.body.addEventListener('mousedown' , onMouseDown );
 	document.body.addEventListener('mouseup'   , onMouseUp   );
 	document.body.addEventListener('mousemove' , onMouseMove );
+    
+    document.ondragover = document.ondrop = (ev) => {
+        ev.preventDefault();
+    }
+
+    document.body.ondrop = (ev) => {
+        for (let i = 0; i < ev.dataTransfer.files.length; ++i) {
+            const fileName = ev.dataTransfer.files[i].path;
+            loadImage( fileName );
+        }
+        ev.preventDefault();
+    }
 
 	init();
-	openDialog();
 	animate();
+    //openDialog();
+    
+    $scope.cfg = cfg;
+    
+    $scope.onFileNameClick = function ( idx ) {
+        showImage( idx );
+    }
+    
+    function showImage( idx ) {
+        if ( idx >= scene.children.length ) return;
+        
+        // hide all layers
+        for(let i = 0; i < scene.children.length; ++i) {
+            let o = scene.children[i];
+            o.visible = false;
+        }
+        // show selected layer
+        scene.children[idx].visible = true;
+    }
 
 	function init() {
 		let halfWidth  = window.innerWidth  / 2;
@@ -46,14 +80,12 @@ function initController( $scope ) {
 	}
 
 	function openDialog() {
-		dialog.showOpenDialog({}, onDialogClose);
+		dialog.showOpenDialog({properties: ['multiSelections']}, onDialogClose);
 	}
 	
 	function onMouseWheel( event ) {
 		let delta = event.deltaY;
-		
-		//camera.updateProjectionMatrix();
-		
+
 		let zoom = camera.zoom;
 		if ( delta < 0) zoom *= cfg.zoomStep;
 		if ( delta > 0) zoom /= cfg.zoomStep;
@@ -71,11 +103,19 @@ function initController( $scope ) {
 	
 	function onKeyDown( event ) {
 		let key = event.keyCode;
+        
+        // 1~9
+        if ( key >= 97 && key <= 105 ) {
+            showImage( key-97 );
+            return;
+        }
+        
 		switch ( key ) {
 			case 79:  // o
 				openDialog();
 				break;
 			case 27: // ESC
+			    toggleShowControl();
 				break;
 			case 82: // r
 				resetCamera();
@@ -116,11 +156,22 @@ function initController( $scope ) {
 	function onDialogClose( filePaths ) {
 		if ( !filePaths )           return;
 		if ( filePaths.length < 1 ) return;
-		const fileName = filePaths[0];
-		
-		let loader = new THREE.TextureLoader();
-		loader.load(fileName, onTextureLoad);
+        
+        for (let i = 0; i < filePaths.length; ++i) {
+            const fileName = filePaths[i];
+            loadImage( fileName );
+        }
 	}
+    
+    function loadImage( fileName ) {
+        // push file name
+        cfg.files.push( fileName );
+        $scope.$apply();
+        
+        // load image
+        let loader = new THREE.TextureLoader();
+        loader.load(fileName, onTextureLoad);
+    }
 	
 	function onTextureLoad( texture ) {
 		const width  = texture.image.width;
@@ -153,6 +204,15 @@ function initController( $scope ) {
 		camera.position.y = 0;
 		camera.zoom       = 1;
 		camera.updateProjectionMatrix();
+	}
+	
+	function toggleShowControl() {
+		if ( isControlShow ) {
+			control.style.visibility = 'hidden'; 
+		} else {
+			control.style.visibility = 'visible';
+		}
+		isControlShow = !isControlShow;
 	}
 
 	function animate() {

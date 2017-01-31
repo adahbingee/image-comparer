@@ -5,4 +5,24 @@ body {
 
 * {
     color: #FFF;
+    font-family: consolas;
+}
+
+#control {
+	position: absolute;
+	top: 0;
+	left: 0;
+	display: block;
+	height: 100%;
+	width: 30%;
+	background-color: rgba(0, 0, 0, 0.8);
+}
+
+#control li {
+    min-height: 50px;
+    word-break: break-all;
+}
+
+#control li:hover {
+    background-color: rgba(255, 255, 255, 0.1);
 }

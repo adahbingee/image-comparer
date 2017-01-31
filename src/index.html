@@ -13,6 +13,14 @@
 		<script src="config.js"></script>
 	</head>
 	<body ng-controller="controller">
+		<div id="control">
+            <ol>
+                <li ng-repeat="x in cfg.files"
+                    ng-click="onFileNameClick($index)">
+                {{ x }}
+                </li>
+            </ol>
+        </div>
 		<div id="container"></div>
 		<script src="main.js"></script>
 	</body>
