@@ -164,13 +164,15 @@ function initController( $scope ) {
 	}
     
     function loadImage( fileName ) {
-        // push file name
-        cfg.files.push( fileName );
-        $scope.$apply();
-        
-        // load image
         let loader = new THREE.TextureLoader();
-        loader.load(fileName, onTextureLoad);
+        loader.load(fileName, function( texture ) {
+            // set texture
+            onTextureLoad( texture );
+            
+            // push file name
+            cfg.files.push( fileName );
+            $scope.$apply();
+        });
     }
 	
 	function onTextureLoad( texture ) {
