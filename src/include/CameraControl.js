@@ -1,15 +1,13 @@
 let CameraControl = function(camera, renderDOM) {
 	this.camera    = camera;
-	this.renderDOM = renderDOM;
 	
-	this.renderDOM.addEventListener('mousewheel', this.onMouseWheel.bind(this));
-	this.renderDOM.addEventListener('mousedown' , this.onMouseDown.bind(this));
-	this.renderDOM.addEventListener('mouseup'   , this.onMouseUp.bind(this));
-	this.renderDOM.addEventListener('mousemove' , this.onMouseMove.bind(this));
+	renderDOM.addEventListener('mousewheel', this.onMouseWheel.bind(this));
+	renderDOM.addEventListener('mousedown' , this.onMouseDown.bind(this));
+	renderDOM.addEventListener('mouseup'   , this.onMouseUp.bind(this));
+	renderDOM.addEventListener('mousemove' , this.onMouseMove.bind(this));
 };
 
 CameraControl.prototype.camera           = null;
-CameraControl.prototype.renderDOM        = null;
 CameraControl.prototype.mouseDownX       = 0;
 CameraControl.prototype.mouseDownY       = 0;
 CameraControl.prototype.cameraX          = 0;

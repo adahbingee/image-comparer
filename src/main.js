@@ -137,6 +137,9 @@ function initController( $scope ) {
 		let geometry = new THREE.PlaneBufferGeometry( width, height );
 		let plane    = new THREE.Mesh( geometry, material );
 		scene.add( plane );
+		
+		// show readed image
+		showImage( scene.children.length-1 );
 	}
 
 	function onWindowResize() {
