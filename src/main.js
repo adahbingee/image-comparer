@@ -11,20 +11,13 @@ function initController( $scope ) {
     let container = document.getElementById( 'container' );
 	// control DOM
 	let control   = document.getElementById( 'control' );
-	// mouse event
-	let isMouseRightClick = false;
-	let mouseDownX, mouseDownY;
-	let mouseMoveX, mouseMoveY;
-	let cameraX   , cameraY;
+	// camera control
+	let cameraControl;
 	// control
 	let isControlShow = true;
 	
 	// add event listener
-	document.body.addEventListener('keydown'   , onKeyDown   );
-	document.body.addEventListener('mousewheel', onMouseWheel);
-	document.body.addEventListener('mousedown' , onMouseDown );
-	document.body.addEventListener('mouseup'   , onMouseUp   );
-	document.body.addEventListener('mousemove' , onMouseMove );
+	document.body.addEventListener('keydown', onKeyDown);
     
     document.ondragover = document.ondrop = (ev) => {
         ev.preventDefault();
@@ -73,6 +66,9 @@ function initController( $scope ) {
 		// set renderer
         renderer.setPixelRatio( window.devicePixelRatio );
         container.appendChild( renderer.domElement );
+		
+		// set camera control
+		cameraControl = new CameraControl( camera, renderer.domElement );
 
 		// set windows size
         window.addEventListener( 'resize', onWindowResize, false );
@@ -81,24 +77,6 @@ function initController( $scope ) {
 
 	function openDialog() {
 		dialog.showOpenDialog({properties: ['multiSelections']}, onDialogClose);
-	}
-	
-	function onMouseWheel( event ) {
-		let delta = event.deltaY;
-
-		let zoom = camera.zoom;
-		if ( delta < 0) zoom *= cfg.zoomStep;
-		if ( delta > 0) zoom /= cfg.zoomStep;
-		
-		let tweenFrom = { zoom: camera.zoom };
-		let tweenTo   = { zoom: zoom        };
-		let tween     = new TWEEN.Tween( tweenFrom );
-		tween.to(tweenTo, 200);
-		tween.onUpdate(function () {
-			camera.zoom = tweenFrom.zoom;
-			camera.updateProjectionMatrix();
-		});
-		tween.start();
 	}
 	
 	function onKeyDown( event ) {
@@ -118,38 +96,11 @@ function initController( $scope ) {
 			    toggleShowControl();
 				break;
 			case 82: // r
-				resetCamera();
+				cameraControl.reset();
 				break;
 			default:
 				console.log( key );
 				break;
-		}
-	}
-	
-	function onMouseDown( event ) {
-		if ( event.button == 2 ) {
-			isMouseRightClick = true;
-			mouseDownX = event.clientX;
-			mouseDownY = event.clientY;
-			cameraX    = camera.position.x;
-			cameraY    = camera.position.y;
-		}
-		console.log( `mouse: ${isMouseRightClick}` );
-	}
-	
-	function onMouseUp( event ) {
-		if ( event.button == 2 ) isMouseRightClick = false;
-		console.log( `mouse: ${isMouseRightClick}` );
-	}
-	
-	function onMouseMove( event ) {
-		
-		if ( isMouseRightClick ) {
-			mouseMoveX = event.clientX;
-			mouseMoveY = event.clientY;
-			camera.position.x = cameraX -(mouseMoveX - mouseDownX);
-			camera.position.y = cameraY + mouseMoveY - mouseDownY;
-			camera.updateProjectionMatrix();
 		}
 	}
 	
@@ -199,13 +150,6 @@ function initController( $scope ) {
 		camera.updateProjectionMatrix();
 
 		renderer.setSize( window.innerWidth, window.innerHeight );
-	}
-	
-	function resetCamera() {
-		camera.position.x = 0;
-		camera.position.y = 0;
-		camera.zoom       = 1;
-		camera.updateProjectionMatrix();
 	}
 	
 	function toggleShowControl() {
