@@ -68,7 +68,7 @@ function initController( $scope ) {
         container.appendChild( renderer.domElement );
 		
 		// set camera control
-		cameraControl = new CameraControl( camera, renderer.domElement );
+		cameraControl = new CameraControl( camera, document.body );
 
 		// set windows size
         window.addEventListener( 'resize', onWindowResize, false );
