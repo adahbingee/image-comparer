@@ -15,10 +15,25 @@ CameraControl.prototype.cameraY          = 0;
 CameraControl.prototype.isMouseRightDown = false;
 
 CameraControl.prototype.reset = function() {
-	this.camera.position.x = 0;
-	this.camera.position.y = 0;
-	this.camera.zoom       = 1;
-	this.camera.updateProjectionMatrix();
+	let tweenFrom = { 
+	                  zoom: this.camera.zoom,
+                      x   : this.camera.position.x,
+                      y   : this.camera.position.y
+					};
+	let tweenTo   = { 
+	                  zoom: 1,
+                      x   : 0,
+                      y   : 0
+					};
+	let tween     = new TWEEN.Tween( tweenFrom );
+	tween.to(tweenTo, 200);
+	tween.onUpdate(function () {
+		this.camera.zoom       = tweenFrom.zoom;
+		this.camera.position.x = tweenFrom.x;
+		this.camera.position.y = tweenFrom.y;
+		this.camera.updateProjectionMatrix();
+	}.bind(this));
+	tween.start();
 };
 
 CameraControl.prototype.onMouseWheel = function( event ) {
