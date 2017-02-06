@@ -1,7 +1,7 @@
 const dialog = require('electron').remote.dialog;
 
 // set UI Control
-let app = angular.module('app', []);
+let app = angular.module('app', ['ngMaterial']);
 app.controller('controller', initController);
 
 function initController( $scope ) {
