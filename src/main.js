@@ -148,6 +148,7 @@ function initController( $scope ) {
 		texture.magFilter = THREE.NearestFilter;
 		texture.minFilter = THREE.NearestFilter;
 		let material = new THREE.MeshBasicMaterial( {
+            transparent: true,
 			map: texture
 		});
 		let geometry = new THREE.PlaneBufferGeometry( width, height );
