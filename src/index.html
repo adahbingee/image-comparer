@@ -19,14 +19,24 @@
 		<script src="include/CameraControl.js"></script>
 	</head>
 	<body ng-controller="controller">
-		<div id="control">
+		<div id="control" layout="column">
             <span> drag file to read. </span>
+            
+            <div layout="row">
+                <md-button class="md-icon-button" ng-click="onFullScreenClick()">
+                    <md-tooltip>Full Screen</md-tooltip>
+                    <md-icon md-svg-src="assets/ic_fullscreen_white_24px.svg"></md-icon>
+                </md-button>
+            </div>
+            
             <ol>
                 <li ng-repeat="x in cfg.files"
                     ng-click="onFileNameClick($index)">
                 {{ x }}
                 </li>
             </ol>
+            <div flex></div>
+            <md-button ng-click="onHideClick()"> Hide </md-button>
         </div>
 		<div id="container"></div>
 		<script src="main.js"></script>

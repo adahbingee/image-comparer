@@ -1,4 +1,5 @@
 const dialog = require('electron').remote.dialog;
+const currentWindow = require("electron").remote.getCurrentWindow();
 
 // set UI Control
 let app = angular.module('app', ['ngMaterial']);
@@ -39,6 +40,15 @@ function initController( $scope ) {
     
     $scope.onFileNameClick = function ( idx ) {
         showImage( idx );
+    }
+    
+    $scope.onHideClick = function () {
+        toggleShowControl();
+    }
+    
+    $scope.onFullScreenClick = function() {
+        let isFullScreen = currentWindow.isFullScreen();
+        currentWindow.setFullScreen( !isFullScreen );
     }
     
     function showImage( idx ) {

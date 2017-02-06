@@ -12,7 +12,6 @@ body {
 	position: absolute;
 	top: 0;
 	left: 0;
-	display: block;
 	height: 100%;
 	width: 30%;
 	background-color: rgba(0, 0, 0, 0.8);
@@ -21,6 +20,7 @@ body {
 #control li {
     min-height: 50px;
     word-break: break-all;
+    padding: 5px;
 }
 
 #control li:hover {
