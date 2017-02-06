@@ -57,6 +57,10 @@ function initController( $scope ) {
         currentWindow.setFullScreen( !isFullScreen );
     }
     
+    $scope.onResetClick = function () {
+        cameraControl.reset();
+    }
+    
     function showImage( idx ) {
         if ( idx >= scene.children.length ) return;
         
