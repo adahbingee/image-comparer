@@ -37,6 +37,7 @@ function initController( $scope ) {
     //openDialog();
     
     $scope.cfg = cfg;
+    $scope.fullScreenIconPath = 'assets/ic_fullscreen_white_24px.svg';
     
     $scope.onFileNameClick = function ( idx ) {
         showImage( idx );
@@ -48,6 +49,11 @@ function initController( $scope ) {
     
     $scope.onFullScreenClick = function() {
         let isFullScreen = currentWindow.isFullScreen();
+        if ( isFullScreen ) {
+            $scope.fullScreenIconPath = 'assets/ic_fullscreen_white_24px.svg';
+        } else {
+            $scope.fullScreenIconPath = 'assets/ic_fullscreen_exit_white_24px.svg';
+        }
         currentWindow.setFullScreen( !isFullScreen );
     }
     
