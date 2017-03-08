@@ -5,6 +5,12 @@ const currentWindow = require("electron").remote.getCurrentWindow();
 let app = angular.module('app', ['ngMaterial']);
 app.controller('controller', initController);
 
+app.config(function($mdThemingProvider) {
+    $mdThemingProvider.theme('default')
+    .primaryPalette('pink')
+    .dark();
+});
+
 function initController( $scope ) {
 	// 3D settings
     let camera, scene, renderer;
@@ -33,7 +39,6 @@ function initController( $scope ) {
     }
 
 	init();
-	animate();
     //openDialog();
     
     $scope.cfg = cfg;
@@ -71,6 +76,8 @@ function initController( $scope ) {
         }
         // show selected layer
         scene.children[idx].visible = true;
+        
+        renderOnce();
     }
 
 	function init() {
@@ -88,11 +95,13 @@ function initController( $scope ) {
         container.appendChild( renderer.domElement );
 		
 		// set camera control
-		cameraControl = new CameraControl( camera, document.body );
+		cameraControl = new CameraControl( camera, document.body, renderOnce );
 
 		// set windows size
         window.addEventListener( 'resize', onWindowResize, false );
 		onWindowResize();
+        
+        renderOnce();
 	}
 
 	function openDialog() {
@@ -122,6 +131,8 @@ function initController( $scope ) {
 				console.log( key );
 				break;
 		}
+        
+        renderOnce();
 	}
 	
 	function onDialogClose( filePaths ) {
@@ -143,6 +154,7 @@ function initController( $scope ) {
             // push file name
             cfg.files.push( fileName );
             $scope.$apply();
+            renderOnce();
         });
     }
 	
@@ -174,6 +186,7 @@ function initController( $scope ) {
 		camera.updateProjectionMatrix();
 
 		renderer.setSize( window.innerWidth, window.innerHeight );
+        renderOnce();
 	}
 	
 	function toggleShowControl() {
@@ -185,13 +198,7 @@ function initController( $scope ) {
 		isControlShow = !isControlShow;
 	}
 
-	function animate() {
-        requestAnimationFrame( animate );
-        render();
+    function renderOnce() {
+        renderer.render( scene, camera );
     }
-
-	function render() {
-		TWEEN.update();
-		renderer.render( scene, camera );
-	}
 }

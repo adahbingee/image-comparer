@@ -33,12 +33,24 @@
                 </md-button>
             </div>
             
+            <div layout="row">
+                <md-input-container>
+                    <label>Diff A</label>
+                    <input ng-model="diffA"/>
+                </md-input-container>
+                <md-input-container>
+                    <label>Diff B</label>
+                    <input ng-model="diffB"/>
+                </md-input-container>
+            </div>
+            
             <ol>
                 <li ng-repeat="x in cfg.files"
                     ng-click="onFileNameClick($index)">
                 {{ x }}
                 </li>
             </ol>
+            
             <div flex></div>
             <md-button ng-click="onHideClick()"> Hide </md-button>
         </div>

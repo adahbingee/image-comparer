@@ -1,6 +1,6 @@
-let CameraControl = function(camera, renderDOM) {
-	this.camera    = camera;
-	
+let CameraControl = function(camera, renderDOM, renderOnce) {
+	this.camera     = camera;
+	this.renderOnce = renderOnce;
 	renderDOM.addEventListener('mousewheel', this.onMouseWheel.bind(this));
 	renderDOM.addEventListener('mousedown' , this.onMouseDown.bind(this));
 	renderDOM.addEventListener('mouseup'   , this.onMouseUp.bind(this));
@@ -13,27 +13,15 @@ CameraControl.prototype.mouseDownY       = 0;
 CameraControl.prototype.cameraX          = 0;
 CameraControl.prototype.cameraY          = 0;
 CameraControl.prototype.isMouseRightDown = false;
+CameraControl.prototype.renderOnce       = null;
+
 
 CameraControl.prototype.reset = function() {
-	let tweenFrom = { 
-	                  zoom: this.camera.zoom,
-                      x   : this.camera.position.x,
-                      y   : this.camera.position.y
-					};
-	let tweenTo   = { 
-	                  zoom: 1,
-                      x   : 0,
-                      y   : 0
-					};
-	let tween     = new TWEEN.Tween( tweenFrom );
-	tween.to(tweenTo, 200);
-	tween.onUpdate(function () {
-		this.camera.zoom       = tweenFrom.zoom;
-		this.camera.position.x = tweenFrom.x;
-		this.camera.position.y = tweenFrom.y;
-		this.camera.updateProjectionMatrix();
-	}.bind(this));
-	tween.start();
+	this.camera.zoom       = 1;
+    this.camera.position.x = 0;
+    this.camera.position.y = 0;
+    this.camera.updateProjectionMatrix();
+    this.renderOnce();
 };
 
 CameraControl.prototype.onMouseWheel = function( event ) {
@@ -42,16 +30,10 @@ CameraControl.prototype.onMouseWheel = function( event ) {
 	let zoom = this.camera.zoom;
 	if (delta < 0) zoom *= cfg.zoomStep;
 	if (delta > 0) zoom /= cfg.zoomStep;
-	
-	let tweenFrom = { zoom: this.camera.zoom };
-	let tweenTo   = { zoom: zoom        };
-	let tween     = new TWEEN.Tween( tweenFrom );
-	tween.to(tweenTo, 200);
-	tween.onUpdate(function () {
-		this.camera.zoom = tweenFrom.zoom;
-		this.camera.updateProjectionMatrix();
-	}.bind(this));
-	tween.start();
+    
+    this.camera.zoom = zoom;
+    this.camera.updateProjectionMatrix();
+    this.renderOnce();
 };
 
 CameraControl.prototype.onMouseDown = function( event ) {
@@ -77,5 +59,6 @@ CameraControl.prototype.onMouseMove = function( event ) {
 		this.camera.position.x = this.cameraX + vecX;
 		this.camera.position.y = this.cameraY + vecY;
 		this.camera.updateProjectionMatrix();
+        this.renderOnce();
 	}
 };
