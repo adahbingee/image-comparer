@@ -116,6 +116,10 @@ function initController( $scope ) {
             showImage( key-97 );
             return;
         }
+        if ( key >= 49 && key <= 57 ) {
+            showImage( key-49 );
+            return;
+        }
         
 		switch ( key ) {
 			case 79:  // o
