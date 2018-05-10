@@ -174,7 +174,7 @@ function initController( $scope ) {
         const width  = texture.image.width;
         const height = texture.image.height;
         texture.magFilter = THREE.NearestFilter;
-        texture.minFilter = THREE.LinearMipMapLinearFilter;
+        texture.minFilter = THREE.NearestFilter;
         let material = new THREE.MeshBasicMaterial( {
             transparent: true,
             map: texture
