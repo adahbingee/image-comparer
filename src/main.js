@@ -165,6 +165,7 @@ function initController( $scope ) {
                 renderOnce();
             });
         } else {
+            // abstract layer
             
         }
     }
