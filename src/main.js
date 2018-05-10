@@ -150,23 +150,30 @@ function initController( $scope ) {
     }
     
     function loadImage( fileName ) {
-        let loader = new THREE.TextureLoader();
-        loader.load(fileName, function( texture ) {
-            // set texture
-            onTextureLoad( texture );
+        // check file type
+        let isImage = (/\.(gif|jpg|jpeg|tiff|png)$/i).test( fileName )
+        
+        if ( isImage ) {
+            let loader = new THREE.TextureLoader();
+            loader.load(fileName, function( texture ) {
+                // set texture
+                onTextureLoad( texture );
+                
+                // push file name
+                cfg.files.push( fileName );
+                $scope.$apply();
+                renderOnce();
+            });
+        } else {
             
-            // push file name
-            cfg.files.push( fileName );
-            $scope.$apply();
-            renderOnce();
-        });
+        }
     }
     
     function onTextureLoad( texture ) {
         const width  = texture.image.width;
         const height = texture.image.height;
         texture.magFilter = THREE.NearestFilter;
-        texture.minFilter = THREE.NearestFilter;
+        texture.minFilter = THREE.LinearMipMapLinearFilter;
         let material = new THREE.MeshBasicMaterial( {
             transparent: true,
             map: texture
