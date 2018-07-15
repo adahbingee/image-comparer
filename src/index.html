@@ -20,7 +20,7 @@
 	</head>
 	<body ng-controller="controller">
 		<div id="control" layout="column">
-            <span> drag file to read. </span>
+            <span> drag file to read. {{cfg.currentIdx+1}}</span>
             
             <div layout="row">
                 <md-button class="md-icon-button" ng-click="onResetClick()">
@@ -30,6 +30,10 @@
                 <md-button class="md-icon-button" ng-click="onFullScreenClick()">
                     <md-tooltip>Full Screen (F11)</md-tooltip>
                     <md-icon md-svg-src="{{fullScreenIconPath}}"></md-icon>
+                </md-button>
+				<md-button class="md-icon-button" ng-click="onDeleteClick()">
+                    <md-tooltip>Delete</md-tooltip>
+                    <md-icon md-svg-src="assets/baseline-delete-24px.svg"></md-icon>
                 </md-button>
             </div>
             

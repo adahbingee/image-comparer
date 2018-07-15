@@ -45,6 +45,7 @@ function initController( $scope ) {
     $scope.fullScreenIconPath = 'assets/ic_fullscreen_white_24px.svg';
     
     $scope.onFileNameClick = function ( idx ) {
+		cfg.currentIdx = idx;
         showImage( idx );
     }
     
@@ -65,6 +66,10 @@ function initController( $scope ) {
     $scope.onResetClick = function () {
         cameraControl.reset();
     }
+	
+	$scope.onDeleteClick = function () {
+		
+	}
     
     function showImage( idx ) {
         if ( idx >= scene.children.length ) return;
@@ -113,11 +118,17 @@ function initController( $scope ) {
         
         // 1~9
         if ( key >= 97 && key <= 105 ) {
-            showImage( key-97 );
+			let idx = key-97;
+			cfg.currentIdx = idx;
+            showImage( idx );
+			$scope.$apply();
             return;
         }
         if ( key >= 49 && key <= 57 ) {
-            showImage( key-49 );
+			let idx = key-49;
+			cfg.currentIdx = idx;
+            showImage( idx );
+			$scope.$apply();
             return;
         }
         
@@ -166,7 +177,6 @@ function initController( $scope ) {
             });
         } else {
             // abstract layer
-            
         }
     }
     
