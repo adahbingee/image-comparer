@@ -202,6 +202,7 @@ function initController( $scope ) {
 			showImage( cfg.currentIdx );
 			$scope.$apply();
 		} else {
+			cfg.currentIdx = 0;
 			renderOnce();
 			$scope.$apply();
 		}
