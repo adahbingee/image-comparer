@@ -20,30 +20,30 @@
 	</head>
 	<body ng-controller="controller">
 		<div id="control" layout="column">
-            <span> drag file to read. {{cfg.currentIdx+1}}</span>
-            
-            <div layout="row">
-                <md-button class="md-icon-button" ng-click="onResetClick()">
+
+            <div layout="row" layout-align="center center">
+                <md-button ng-click="onResetClick()">
                     <md-tooltip>Reset (R)</md-tooltip>
                     <md-icon md-svg-src="assets/ic_youtube_searched_for_white_24px.svg"></md-icon>
                 </md-button>
-                <md-button class="md-icon-button" ng-click="onFullScreenClick()">
+				<md-button ng-click="onDeleteClick()">
+                    <md-tooltip>Delete (Del)</md-tooltip>
+                    <md-icon md-svg-src="assets/baseline-delete-24px.svg"></md-icon>
+                </md-button>
+                <md-button ng-click="onFullScreenClick()">
                     <md-tooltip>Full Screen (F11)</md-tooltip>
                     <md-icon md-svg-src="{{fullScreenIconPath}}"></md-icon>
                 </md-button>
-				<md-button class="md-icon-button" ng-click="onDeleteClick()">
-                    <md-tooltip>Delete</md-tooltip>
-                    <md-icon md-svg-src="assets/baseline-delete-24px.svg"></md-icon>
-                </md-button>
             </div>
             
-            <ol>
-                <li ng-repeat="x in cfg.files"
-                    ng-click="onFileNameClick($index)">
-                {{ x }}
-                </li>
-            </ol>
-            
+			<ul>
+				<li ng-repeat="x in cfg.files"
+					ng-click="onFileNameClick($index)"
+					class="{{($index == cfg.currentIdx) ? 'selected' : '' }}">
+					{{$index+1}}. {{ x }}
+				</li>
+			</ul>
+			
             <div flex></div>
             <md-button ng-click="onHideClick()"> Hide </md-button>
         </div>
