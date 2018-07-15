@@ -215,8 +215,14 @@ function initController( $scope ) {
 		// remove file name list
 		cfg.files.splice(idx, 1);
 		
+	    // release memory	
+		scene.children[idx].material.map.dispose();
+		scene.children[idx].material.dispose();
+		scene.children[idx].geometry.dispose();
+		
 		// remove from scene
-		scene.children.splice(idx, 1);
+		//scene.children.splice(idx, 1);
+		scene.remove(scene.children[idx]);
 		
 		// update current index
 		cfg.currentIdx = Math.max(cfg.currentIdx-1, 0);
