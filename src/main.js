@@ -68,11 +68,12 @@ function initController( $scope ) {
     }
 	
 	$scope.onDeleteClick = function () {
-		
+		deleteImage( cfg.currentIdx );
 	}
     
     function showImage( idx ) {
-        if ( idx >= scene.children.length ) return;
+        if ( idx < 0 )                      return;
+		if ( idx >= scene.children.length ) return;
         
         // hide all layers
         for(let i = 0; i < scene.children.length; ++i) {
@@ -142,6 +143,9 @@ function initController( $scope ) {
             case 82: // r
                 cameraControl.reset();
                 break;
+		    case 46: // delete
+			    deleteImage( cfg.currentIdx );
+			    break;
             default:
                 console.log( key );
                 break;
@@ -179,6 +183,23 @@ function initController( $scope ) {
             // abstract layer
         }
     }
+	
+	function deleteImage ( idx ) {
+		if ( idx < 0 )                      return;
+		if ( idx >= scene.children.length ) return;
+		
+		// remove file name list
+		
+		// remove from scene
+		
+		// update current index
+		//cfg.currentIdx = Math.max(idx - 1, 0);
+		
+		// show current image
+		showImage( cfg.currentIdx );
+		
+		renderOnce();
+	}
     
     function onTextureLoad( texture ) {
         const width  = texture.image.width;
