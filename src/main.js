@@ -73,8 +73,11 @@ function initController( $scope ) {
     
     function showImage( idx ) {
         if ( idx < 0 )                      return;
-		if ( scene.children.length <= 0   ) return;
 		if ( idx >= scene.children.length ) return;
+		if ( scene.children.length <= 0   ) {
+			renderOnce();
+			return;
+		}
         
         // hide all layers
         for(let i = 0; i < scene.children.length; ++i) {
