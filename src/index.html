@@ -21,22 +21,22 @@
 	<body ng-controller="controller">
 		<div id="control" layout="column">
 
-            <div layout="row" layout-align="center center">
-                <md-button ng-click="onResetClick()">
+            <div layout="row">
+                <md-button flex ng-click="onResetClick()">
                     <md-tooltip>Reset (R)</md-tooltip>
                     <md-icon md-svg-src="assets/ic_youtube_searched_for_white_24px.svg"></md-icon>
                 </md-button>
-				<md-button ng-click="onDeleteClick()">
+				<md-button flex ng-click="onDeleteClick()">
                     <md-tooltip>Delete (Del)</md-tooltip>
                     <md-icon md-svg-src="assets/baseline-delete-24px.svg"></md-icon>
                 </md-button>
-                <md-button ng-click="onFullScreenClick()">
+                <md-button flex ng-click="onFullScreenClick()">
                     <md-tooltip>Full Screen (F11)</md-tooltip>
                     <md-icon md-svg-src="{{fullScreenIconPath}}"></md-icon>
                 </md-button>
             </div>
             
-			<ul>
+			<ul layout-align="start start">
 				<li ng-repeat="x in cfg.files"
 					ng-click="onFileNameClick($index)"
 					class="{{($index == cfg.currentIdx) ? 'selected' : '' }}">

@@ -28,9 +28,9 @@ ul, li {
 
 #control li {
 	display: block;
-    min-height: 50px;
+    min-height: 2em;
     word-break: break-all;
-    padding: 5px;
+    padding: 0.5em;
 }
 
 #control li:hover {

@@ -150,6 +150,26 @@ function initController( $scope ) {
 		    case 46: // delete
 			    deleteImage( cfg.currentIdx );
 			    break;
+			case 40: // down
+				cfg.currentIdx = Math.min( cfg.currentIdx+1, cfg.files.length-1 );
+				showImage( cfg.currentIdx );
+			    $scope.$apply();
+				break;
+			case 38: // up
+			    cfg.currentIdx = Math.max( cfg.currentIdx-1, 0 );
+				showImage( cfg.currentIdx );
+			    $scope.$apply();
+				break;
+			case 39: // right
+				cfg.currentIdx = Math.min( cfg.currentIdx+1, cfg.files.length-1 );
+				showImage( cfg.currentIdx );
+			    $scope.$apply();
+				break;
+			case 37: // left
+			    cfg.currentIdx = Math.max( cfg.currentIdx-1, 0 );
+				showImage( cfg.currentIdx );
+			    $scope.$apply();
+				break;
             default:
                 console.log( key );
                 break;
