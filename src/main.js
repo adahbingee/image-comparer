@@ -189,16 +189,22 @@ function initController( $scope ) {
 		if ( idx >= scene.children.length ) return;
 		
 		// remove file name list
+		cfg.files.splice(idx, 1);
 		
 		// remove from scene
+		scene.children.splice(idx, 1);
 		
 		// update current index
-		//cfg.currentIdx = Math.max(idx - 1, 0);
+		cfg.currentIdx--;
 		
 		// show current image
-		showImage( cfg.currentIdx );
-		
-		renderOnce();
+		if ( cfg.currentIdx >= 0 ) {
+			showImage( cfg.currentIdx );
+			$scope.$apply();
+		} else {
+			renderOnce();
+			$scope.$apply();
+		}
 	}
     
     function onTextureLoad( texture ) {
