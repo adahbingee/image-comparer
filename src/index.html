@@ -45,7 +45,10 @@
 			</ul>
 			
             <div flex></div>
-            <md-button ng-click="onHideClick()"> Hide </md-button>
+            <md-button ng-click="onHideClick()"> 
+				<md-tooltip md-direction="top">Hide</md-tooltip>
+				<md-icon md-svg-src="assets/baseline-keyboard_hide-24px.svg"></md-icon>
+			</md-button>
         </div>
 		<div id="container"></div>
 		<script src="main.js"></script>
