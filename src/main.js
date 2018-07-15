@@ -73,6 +73,7 @@ function initController( $scope ) {
     
     function showImage( idx ) {
         if ( idx < 0 )                      return;
+		if ( scene.children.length <= 0   ) return;
 		if ( idx >= scene.children.length ) return;
         
         // hide all layers
@@ -195,17 +196,11 @@ function initController( $scope ) {
 		scene.children.splice(idx, 1);
 		
 		// update current index
-		cfg.currentIdx--;
+		cfg.currentIdx = Math.max(cfg.currentIdx-1, 0);
 		
 		// show current image
-		if ( cfg.currentIdx >= 0 ) {
-			showImage( cfg.currentIdx );
-			$scope.$apply();
-		} else {
-			cfg.currentIdx = 0;
-			renderOnce();
-			$scope.$apply();
-		}
+		showImage( cfg.currentIdx );
+		$scope.$apply();
 	}
     
     function onTextureLoad( texture ) {
