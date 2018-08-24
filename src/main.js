@@ -39,8 +39,7 @@ function initController( $scope ) {
     }
 
     init();
-    //openDialog();
-    
+
     $scope.cfg = cfg;
     $scope.fullScreenIconPath = 'assets/ic_fullscreen_white_24px.svg';
     
@@ -70,6 +69,10 @@ function initController( $scope ) {
 	$scope.onDeleteClick = function () {
 		deleteImage( cfg.currentIdx );
 	}
+    
+    $scope.onOpenClick = function() {
+        openDialog();
+    }
     
     function showImage( idx ) {
         if ( idx < 0 )                      return;
