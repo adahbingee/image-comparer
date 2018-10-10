@@ -1,5 +1,6 @@
 const dialog = require('electron').remote.dialog;
 const currentWindow = require("electron").remote.getCurrentWindow();
+const fs = require('fs');
 
 // set UI Control
 let app = angular.module('app', ['ngMaterial']);
@@ -198,9 +199,18 @@ function initController( $scope ) {
         let isImage = (/\.(gif|jpg|jpeg|tiff|png)$/i).test( fileName )
         
         if ( isImage ) {
-            // disable file cache
-            THREE.Cache.enabled = false;
+            let loader = new TextureLoaderSync();
+            loader.load(fileName, function( texture ) {
+                // set texture
+                onTextureLoad( texture );
+                
+                // push file name
+                cfg.files.push( fileName );
+                $scope.$apply();
+                renderOnce();
+            });
             
+            /*
             let loader = new THREE.TextureLoader();
             loader.load(fileName, function( texture ) {
                 // set texture
@@ -211,6 +221,7 @@ function initController( $scope ) {
                 $scope.$apply();
                 renderOnce();
             });
+            */
         } else {
             // abstract layer
         }
