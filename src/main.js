@@ -68,6 +68,7 @@ function initController( $scope ) {
 	
 	$scope.onDeleteClick = function () {
 		deleteImage( cfg.currentIdx );
+        renderOnce();
 	}
     
     $scope.onOpenClick = function() {
@@ -152,6 +153,7 @@ function initController( $scope ) {
                 break;
 		    case 46: // delete
 			    deleteImage( cfg.currentIdx );
+                $scope.$apply();
 			    break;
 			case 40: // down
 				cfg.currentIdx = Math.min( cfg.currentIdx+1, cfg.files.length-1 );
@@ -196,6 +198,9 @@ function initController( $scope ) {
         let isImage = (/\.(gif|jpg|jpeg|tiff|png)$/i).test( fileName )
         
         if ( isImage ) {
+            // disable file cache
+            THREE.Cache.enabled = false;
+            
             let loader = new THREE.TextureLoader();
             loader.load(fileName, function( texture ) {
                 // set texture
@@ -232,7 +237,6 @@ function initController( $scope ) {
 		
 		// show current image
 		showImage( cfg.currentIdx );
-		$scope.$apply();
 	}
     
     function onTextureLoad( texture ) {
