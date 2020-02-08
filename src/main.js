@@ -23,10 +23,10 @@ function initController( $scope ) {
     let cameraControl;
     // control
     let isControlShow = true;
-    
+
     // add event listener
     document.body.addEventListener('keydown', onKeyDown);
-    
+
     document.ondragover = document.ondrop = (ev) => {
         ev.preventDefault();
     }
@@ -43,16 +43,16 @@ function initController( $scope ) {
 
     $scope.cfg = cfg;
     $scope.fullScreenIconPath = 'assets/ic_fullscreen_white_24px.svg';
-    
+
     $scope.onFileNameClick = function ( idx ) {
 		cfg.currentIdx = idx;
         showImage( idx );
     }
-    
+
     $scope.onHideClick = function () {
         toggleShowControl();
     }
-    
+
     $scope.onFullScreenClick = function() {
         let isFullScreen = currentWindow.isFullScreen();
         if ( isFullScreen ) {
@@ -62,20 +62,20 @@ function initController( $scope ) {
         }
         currentWindow.setFullScreen( !isFullScreen );
     }
-    
+
     $scope.onResetClick = function () {
         cameraControl.reset();
     }
-	
+
 	$scope.onDeleteClick = function () {
 		deleteImage( cfg.currentIdx );
         renderOnce();
 	}
-    
+
     $scope.onOpenClick = function() {
         openDialog();
     }
-    
+
     function showImage( idx ) {
         if ( idx < 0 )                      return;
 		if ( idx >= scene.children.length ) return;
@@ -83,7 +83,7 @@ function initController( $scope ) {
 			renderOnce();
 			return;
 		}
-        
+
         // hide all layers
         for(let i = 0; i < scene.children.length; ++i) {
             let o = scene.children[i];
@@ -91,7 +91,7 @@ function initController( $scope ) {
         }
         // show selected layer
         scene.children[idx].visible = true;
-        
+
         renderOnce();
     }
 
@@ -104,28 +104,28 @@ function initController( $scope ) {
         renderer = new THREE.WebGLRenderer();
 
         camera.position.z = 1000;
-        
+
         // set renderer
         renderer.setPixelRatio( window.devicePixelRatio );
         container.appendChild( renderer.domElement );
-        
+
         // set camera control
         cameraControl = new CameraControl( camera, document.body, renderOnce );
 
         // set windows size
         window.addEventListener( 'resize', onWindowResize, false );
         onWindowResize();
-        
+
         renderOnce();
     }
 
     function openDialog() {
         dialog.showOpenDialog({properties: ['multiSelections']}, onDialogClose);
     }
-    
+
     function onKeyDown( event ) {
         let key = event.keyCode;
-        
+
         // 1~9
         if ( key >= 97 && key <= 105 ) {
 			let idx = key-97;
@@ -141,7 +141,7 @@ function initController( $scope ) {
 			$scope.$apply();
             return;
         }
-        
+
         switch ( key ) {
             case 79:  // o
                 openDialog();
@@ -180,76 +180,63 @@ function initController( $scope ) {
                 console.log( key );
                 break;
         }
-        
+
         renderOnce();
     }
-    
+
     function onDialogClose( filePaths ) {
         if ( !filePaths )           return;
         if ( filePaths.length < 1 ) return;
-        
+
         for (let i = 0; i < filePaths.length; ++i) {
             const fileName = filePaths[i];
             loadImage( fileName );
         }
     }
-    
+
     function loadImage( fileName ) {
         // check file type
         let isImage = (/\.(gif|jpg|jpeg|tiff|png)$/i).test( fileName )
-        
+
         if ( isImage ) {
-            let loader = new TextureLoaderSync();
-            loader.load(fileName, function( texture ) {
-                // set texture
-                onTextureLoad( texture );
-                
-                // push file name
-                cfg.files.push( fileName );
-                $scope.$apply();
-                renderOnce();
-            });
-            
-            /*
             let loader = new THREE.TextureLoader();
             loader.load(fileName, function( texture ) {
                 // set texture
                 onTextureLoad( texture );
-                
+
                 // push file name
                 cfg.files.push( fileName );
                 $scope.$apply();
                 renderOnce();
             });
-            */
         } else {
             // abstract layer
         }
     }
-	
+
 	function deleteImage ( idx ) {
 		if ( idx < 0 )                      return;
 		if ( idx >= scene.children.length ) return;
-		
+
 		// remove file name list
 		cfg.files.splice(idx, 1);
-		
-	    // release memory	
+
+	    // release memory
 		scene.children[idx].material.map.dispose();
 		scene.children[idx].material.dispose();
 		scene.children[idx].geometry.dispose();
-		
+
 		// remove from scene
 		//scene.children.splice(idx, 1);
 		scene.remove(scene.children[idx]);
-		
+
 		// update current index
 		cfg.currentIdx = Math.max(cfg.currentIdx-1, 0);
-		
+
 		// show current image
 		showImage( cfg.currentIdx );
 	}
-    
+
     function onTextureLoad( texture ) {
         const width  = texture.image.width;
         const height = texture.image.height;
@@ -262,7 +249,7 @@ function initController( $scope ) {
         let geometry = new THREE.PlaneBufferGeometry( width, height );
         let plane    = new THREE.Mesh( geometry, material );
         scene.add( plane );
-        
+
         // show readed image
         showImage( scene.children.length-1 );
     }
@@ -280,10 +267,10 @@ function initController( $scope ) {
         renderer.setSize( window.innerWidth, window.innerHeight );
         renderOnce();
     }
-    
+
     function toggleShowControl() {
         if ( isControlShow ) {
-            control.style.visibility = 'hidden'; 
+            control.style.visibility = 'hidden';
         } else {
             control.style.visibility = 'visible';
         }
