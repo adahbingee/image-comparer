@@ -45,7 +45,7 @@ function initController( $scope ) {
     $scope.fullScreenIconPath = 'assets/ic_fullscreen_white_24px.svg';
 
     $scope.onFileNameClick = function ( idx ) {
-		cfg.currentIdx = idx;
+		cfg.currentFileIdx = idx;
         showImage( idx );
     }
 
@@ -68,7 +68,7 @@ function initController( $scope ) {
     }
 
 	$scope.onDeleteClick = function () {
-		deleteImage( cfg.currentIdx );
+		deleteImage( cfg.currentFileIdx );
         renderOnce();
 	}
 
@@ -129,14 +129,14 @@ function initController( $scope ) {
         // 1~9
         if ( key >= 97 && key <= 105 ) {
 			let idx = key-97;
-			cfg.currentIdx = idx;
+			cfg.currentFileIdx = idx;
             showImage( idx );
 			$scope.$apply();
             return;
         }
         if ( key >= 49 && key <= 57 ) {
 			let idx = key-49;
-			cfg.currentIdx = idx;
+			cfg.currentFileIdx = idx;
             showImage( idx );
 			$scope.$apply();
             return;
@@ -153,27 +153,27 @@ function initController( $scope ) {
                 cameraControl.reset();
                 break;
 		    case 46: // delete
-			    deleteImage( cfg.currentIdx );
+			    deleteImage( cfg.currentFileIdx );
                 $scope.$apply();
 			    break;
 			case 40: // down
-				cfg.currentIdx = Math.min( cfg.currentIdx+1, cfg.files.length-1 );
-				showImage( cfg.currentIdx );
+				cfg.currentFileIdx = Math.min( cfg.currentFileIdx+1, cfg.files.length-1 );
+				showImage( cfg.currentFileIdx );
 			    $scope.$apply();
 				break;
 			case 38: // up
-			    cfg.currentIdx = Math.max( cfg.currentIdx-1, 0 );
-				showImage( cfg.currentIdx );
+			    cfg.currentFileIdx = Math.max( cfg.currentFileIdx-1, 0 );
+				showImage( cfg.currentFileIdx );
 			    $scope.$apply();
 				break;
 			case 39: // right
-				cfg.currentIdx = Math.min( cfg.currentIdx+1, cfg.files.length-1 );
-				showImage( cfg.currentIdx );
+				cfg.currentFileIdx = Math.min( cfg.currentFileIdx+1, cfg.files.length-1 );
+				showImage( cfg.currentFileIdx );
 			    $scope.$apply();
 				break;
 			case 37: // left
-			    cfg.currentIdx = Math.max( cfg.currentIdx-1, 0 );
-				showImage( cfg.currentIdx );
+			    cfg.currentFileIdx = Math.max( cfg.currentFileIdx-1, 0 );
+				showImage( cfg.currentFileIdx );
 			    $scope.$apply();
 				break;
             default:
@@ -196,7 +196,8 @@ function initController( $scope ) {
 
     function loadImage( fileName ) {
         // check file type
-        let isImage = (/\.(gif|jpg|jpeg|tiff|png)$/i).test( fileName )
+        let isImage = (/\.(gif|jpg|jpeg|tiff|png|webp)$/i).test( fileName )
+        let isVideo = (/\.(mp4|avi|yuv|webm)$/i).test( fileName )
 
         if ( isImage ) {
             let loader = new THREE.TextureLoader();
@@ -209,6 +210,8 @@ function initController( $scope ) {
                 $scope.$apply();
                 renderOnce();
             });
+        } else if ( isVideo ) {
+
         } else {
             // abstract layer
         }
@@ -231,15 +234,15 @@ function initController( $scope ) {
 		scene.remove(scene.children[idx]);
 
 		// update current index
-		cfg.currentIdx = Math.max(cfg.currentIdx-1, 0);
+		cfg.currentFileIdx = Math.max(cfg.currentFileIdx-1, 0);
 
 		// show current image
-		showImage( cfg.currentIdx );
+		showImage( cfg.currentFileIdx );
 	}
 
     function onTextureLoad( texture ) {
-        const width  = texture.image.width;
-        const height = texture.image.height;
+        const width       = texture.image.width;
+        const height      = texture.image.height;
         texture.magFilter = THREE.NearestFilter;
         texture.minFilter = THREE.NearestFilter;
         let material = new THREE.MeshBasicMaterial( {

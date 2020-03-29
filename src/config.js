@@ -1,5 +1,6 @@
 let cfg = {
 	zoomStep: Math.sqrt(2.0),
     files: [],
-	currentIdx: 0
+	currentFileIdx: 0,                // file index
+	currentFrameIndex: 0              // frame index for video
 }
