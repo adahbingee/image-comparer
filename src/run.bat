@@ -1,1 +1,1 @@
-start ..\electron\electron.exe ..\src
+start ..\..\electron\electron.exe ..\src

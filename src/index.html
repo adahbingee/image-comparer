@@ -1,25 +1,25 @@
 <!DOCTYPE html>
 <html ng-app="app">
-	<head>
-		<title>Image Comparer</title>
-		<link rel="stylesheet" type="text/css" href="style/style.css">
-		<link rel="stylesheet" type="text/css" href="style/angular-material.min.css">
-		
-		<!-- load lib start -->
-		<script src="lib/three.min.js"></script>
+    <head>
+        <title>Image Comparer</title>
+        <link rel="stylesheet" type="text/css" href="style/style.css">
+        <link rel="stylesheet" type="text/css" href="style/angular-material.min.css">
+
+        <!-- load lib start -->
+        <script src="lib/three.min.js"></script>
         <script src="lib/angular.min.js"></script>
         <script src="lib/Tween.min.js"></script>
         <script src="lib/angular-animate.min.js"></script>
         <script src="lib/angular-aria.min.js"></script>
         <script src="lib/angular-messages.min.js"></script>
         <script src="lib/angular-material.min.js"></script>
-		 <!-- load lib end -->
-		 
-		<script src="config.js"></script>
-		<script src="include/CameraControl.js"></script>
-	</head>
-	<body ng-controller="controller">
-		<div id="control" layout="column">
+         <!-- load lib end -->
+
+        <script src="config.js"></script>
+        <script src="include/CameraControl.js"></script>
+    </head>
+    <body ng-controller="controller">
+        <div id="control" layout="column">
 
             <div layout="row">
                 <md-button flex ng-click="onResetClick()">
@@ -30,7 +30,7 @@
                     <md-tooltip>Open</md-tooltip>
                     <md-icon md-svg-src="assets/baseline-folder-24px.svg"></md-icon>
                 </md-button>
-				<md-button flex ng-click="onDeleteClick()">
+                <md-button flex ng-click="onDeleteClick()">
                     <md-tooltip>Delete (Del)</md-tooltip>
                     <md-icon md-svg-src="assets/baseline-delete-24px.svg"></md-icon>
                 </md-button>
@@ -39,22 +39,37 @@
                     <md-icon md-svg-src="{{fullScreenIconPath}}"></md-icon>
                 </md-button>
             </div>
-            
-			<ul layout-align="start start">
-				<li ng-repeat="x in cfg.files"
-					ng-click="onFileNameClick($index)"
-					class="{{($index == cfg.currentIdx) ? 'selected' : '' }}">
-					{{$index+1}}. {{ x }}
-				</li>
-			</ul>
-			
+
+            <div layout="row">
+                <md-input-container>
+                    <label>frame index</label>
+                    <input ng-model="cfg.currentFrameIndex" type="number" min="0" step="1" aria-label="current frame index"/>
+                </md-input-container>
+                <md-input-container>
+                    <label>width</label>
+                    <input ng-model="cfg.imgSizeX" type="number" min="0" step="1" aria-label="frame width"/>
+                </md-input-container>
+                <md-input-container>
+                    <label>height</label>
+                    <input ng-model="cfg.imgSizeY" type="number" min="0" step="1" aria-label="frame height"/>
+                </md-input-container>
+            </div>
+
+            <ul layout-align="start start">
+                <li ng-repeat="x in cfg.files"
+                    ng-click="onFileNameClick($index)"
+                    class="{{($index == cfg.currentFileIdx) ? 'selected' : '' }}">
+                    {{$index+1}}. {{ x }}
+                </li>
+            </ul>
+
             <div flex></div>
-            <md-button ng-click="onHideClick()"> 
-				<md-tooltip md-direction="top">Hide</md-tooltip>
-				<md-icon md-svg-src="assets/baseline-keyboard_hide-24px.svg"></md-icon>
-			</md-button>
+            <md-button ng-click="onHideClick()">
+                <md-tooltip md-direction="top">Hide</md-tooltip>
+                <md-icon md-svg-src="assets/baseline-keyboard_hide-24px.svg"></md-icon>
+            </md-button>
         </div>
-		<div id="container"></div>
-		<script src="main.js"></script>
-	</body>
+        <div id="container"></div>
+        <script src="main.js"></script>
+    </body>
 </html>
