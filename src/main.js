@@ -196,7 +196,7 @@ function initController( $scope ) {
 
     function loadImage( fileName ) {
         // check file type
-        let isImage = (/\.(gif|jpg|jpeg|tiff|png|webp)$/i).test( fileName )
+        let isImage = (/\.(gif|jpg|jpeg|tiff|png|webp|bmp)$/i).test( fileName )
         let isVideo = (/\.(mp4|avi|yuv|webm)$/i).test( fileName )
 
         if ( isImage ) {
