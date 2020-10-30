@@ -91,6 +91,10 @@ function initController( $scope ) {
         }
         // show selected layer
         scene.children[idx].visible = true;
+        
+        // show image size
+        cfg.imgSizeX = scene.children[idx].geometry.parameters.width;
+        cfg.imgSizeY = scene.children[idx].geometry.parameters.height;
 
         renderOnce();
     }
@@ -230,7 +234,6 @@ function initController( $scope ) {
 		scene.children[idx].geometry.dispose();
 
 		// remove from scene
-		//scene.children.splice(idx, 1);
 		scene.remove(scene.children[idx]);
 
 		// update current index
