@@ -75,6 +75,24 @@ function initController( $scope ) {
     $scope.onOpenClick = function() {
         openDialog();
     }
+    
+    $scope.onSizeChange = function() {
+        let idx = cfg.currentFileIdx;
+        if ( idx < 0 )                      return;
+		if ( idx >= scene.children.length ) return;
+		if ( scene.children.length <= 0   ) {
+			renderOnce();
+			return;
+		}
+        
+        // release original geometry
+        scene.children[idx].geometry.dispose();
+        // set new size geometry
+        let geometry = new THREE.PlaneBufferGeometry( cfg.imgSizeX, cfg.imgSizeY );
+        scene.children[idx].geometry = geometry;
+        
+        renderOnce();
+    }
 
     function showImage( idx ) {
         if ( idx < 0 )                      return;

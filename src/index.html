@@ -47,11 +47,11 @@
                 </md-input-container>
                 <md-input-container>
                     <label>width</label>
-                    <input ng-model="cfg.imgSizeX" type="number" min="0" step="1" aria-label="frame width"/>
+                    <input ng-model="cfg.imgSizeX" ng-change="onSizeChange()" type="number" min="0" step="1" aria-label="frame width"/>
                 </md-input-container>
                 <md-input-container>
                     <label>height</label>
-                    <input ng-model="cfg.imgSizeY" type="number" min="0" step="1" aria-label="frame height"/>
+                    <input ng-model="cfg.imgSizeY" ng-change="onSizeChange()" type="number" min="0" step="1" aria-label="frame height"/>
                 </md-input-container>
             </div>
 
