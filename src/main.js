@@ -93,6 +93,34 @@ function initController( $scope ) {
         
         renderOnce();
     }
+    
+    $scope.onOffsetChange = function() {
+        let idx = cfg.currentFileIdx;
+        if ( idx < 0 )                      return;
+		if ( idx >= scene.children.length ) return;
+		if ( scene.children.length <= 0   ) {
+			renderOnce();
+			return;
+		}
+        
+        scene.children[idx].position.x = cfg.offsetX;
+        scene.children[idx].position.y = cfg.offsetY;
+        renderOnce();
+    }
+    
+    $scope.onTransparentChange = function() {
+        let idx = cfg.currentFileIdx;
+        if ( idx < 0 )                      return;
+		if ( idx >= scene.children.length ) return;
+		if ( scene.children.length <= 0   ) {
+			renderOnce();
+			return;
+		}
+        
+        scene.children[idx].opacity = cfg.transparent;
+        
+        renderOnce();
+    }
 
     function showImage( idx ) {
         if ( idx < 0 )                      return;
@@ -113,6 +141,10 @@ function initController( $scope ) {
         // show image size
         cfg.imgSizeX = scene.children[idx].geometry.parameters.width;
         cfg.imgSizeY = scene.children[idx].geometry.parameters.height;
+        
+        // show image offset
+        cfg.offsetX  = scene.children[idx].position.x;
+        cfg.offsetY  = scene.children[idx].position.y;
 
         renderOnce();
     }

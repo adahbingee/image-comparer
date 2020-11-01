@@ -54,6 +54,21 @@
                     <input ng-model="cfg.imgSizeY" ng-change="onSizeChange()" type="number" min="0" step="1" aria-label="frame height"/>
                 </md-input-container>
             </div>
+            
+            <div layout="row">
+                <md-input-container flex="33">
+                    <label>transparent</label>
+                    <input ng-model="cfg.transparent" ng-change="onTransparentChange()" type="number" min="0" step="0.01" max="1" aria-label="current frame index"/>
+                </md-input-container>
+                <md-input-container flex="33">
+                    <label>offset X</label>
+                    <input ng-model="cfg.offsetX" ng-change="onOffsetChange()" type="number" step="1" aria-label="frame width"/>
+                </md-input-container>
+                <md-input-container flex="33">
+                    <label>offset Y</label>
+                    <input ng-model="cfg.offsetY" ng-change="onOffsetChange()" type="number" step="1" aria-label="frame height"/>
+                </md-input-container>
+            </div>
 
             <ul layout-align="start start">
                 <li ng-repeat="x in cfg.files"
