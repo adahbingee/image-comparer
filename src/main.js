@@ -1,5 +1,5 @@
-const dialog = require('electron').remote.dialog;
-const currentWindow = require("electron").remote.getCurrentWindow();
+const { dialog } = require('electron');
+const currentWindow = require('electron').remote.getCurrentWindow();
 const fs = require('fs');
 
 // set UI Control
@@ -52,7 +52,7 @@ function initController( $scope ) {
     $scope.onHideClick = function () {
         toggleShowControl();
     }
-
+    
     $scope.onFullScreenClick = function() {
         let isFullScreen = currentWindow.isFullScreen();
         if ( isFullScreen ) {
